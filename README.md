@@ -14,7 +14,7 @@
 你可以直接使用 go get 安装：
 
 ```
-go get github.com/li-bao-jia/millennium-go-sdk
+go get github.com/li-bao-jia/millennium
 ```
 
 ## 快速开始 Quick Start
@@ -26,8 +26,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/product"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/product"
 )
 
 func main() {
@@ -72,8 +72,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/order"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/order"
 )
 
 func main() {
@@ -121,8 +121,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/order"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/order"
 )
 
 func main() {
@@ -169,8 +169,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/order"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/order"
 )
 
 func main() {
@@ -238,8 +238,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/balance"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/balance"
 )
 
 func main() {

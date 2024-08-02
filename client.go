@@ -1,7 +1,7 @@
 package millennium_go_sdk
 
 import (
-	"github.com/li-bao-jia/millennium-go-sdk/pkg"
+	"github.com/li-bao-jia/millennium/pkg"
 )
 
 var (

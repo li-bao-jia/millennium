@@ -1,4 +1,4 @@
-module github.com/li-bao-jia/millennium-go-sdk
+module github.com/li-bao-jia/millennium
 
 go 1.21.8
 
