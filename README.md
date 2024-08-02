@@ -31,7 +31,7 @@ import (
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置是否使用http，ture为http，false为https
 	// client.SetHttp(true)
@@ -77,7 +77,7 @@ import (
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
 	// client.SetDevelopment(true)
@@ -126,7 +126,7 @@ import (
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
 	// client.SetDevelopment(true)
@@ -174,7 +174,7 @@ import (
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
 	// client.SetDevelopment(true)
@@ -243,7 +243,7 @@ import (
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
 	// client.SetDevelopment(true)

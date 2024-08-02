@@ -1,4 +1,4 @@
-package millennium_go_sdk
+package millennium
 
 import (
 	"github.com/li-bao-jia/millennium/pkg"
