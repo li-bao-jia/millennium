@@ -1,6 +1,8 @@
 package millennium
 
 import (
+	"encoding/base64"
+	"github.com/forgoer/openssl"
 	"github.com/li-bao-jia/millennium/pkg"
 )
 
@@ -66,6 +68,26 @@ func (a *ApiClient) SetHttp(h bool) {
 
 func (a *ApiClient) SetVersion(v string) {
 	a.version = v
+}
+
+/**
+ * @Description:DecryptAES256ECB 实现 AES-256 ECB 模式解密
+ */
+
+func (a *ApiClient) DecryptAES256ECB(pass string) (str string, err error) {
+	cardNumberRes, err := base64.StdEncoding.DecodeString(pass)
+	if err != nil {
+		return
+	}
+
+	r, err := openssl.AesECBDecrypt(cardNumberRes, []byte(a.secret), openssl.PKCS7_PADDING)
+	if err != nil {
+		return
+	}
+
+	str = string(r)
+
+	return
 }
 
 /**

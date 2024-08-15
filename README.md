@@ -215,10 +215,10 @@ func main() {
 		for i, card := range cards {
 			// 卡密解密
 			var CardPwd, CardNumber string
-			if CardPwd, err = order.DecryptAES256ECB(card.CardPwd, appSecret); err != nil {
+			if CardPwd, err = client.DecryptAES256ECB(card.CardPwd); err != nil {
 				return
 			}
-			if CardNumber, err = order.DecryptAES256ECB(card.CardNumber, appSecret); err != nil {
+			if CardNumber, err = client.DecryptAES256ECB(card.CardNumber); err != nil {
 				return
 			}
 			cards[i].CardPwd = CardPwd
