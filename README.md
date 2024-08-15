@@ -14,7 +14,7 @@
 你可以直接使用 go get 安装：
 
 ```
-go get github.com/li-bao-jia/millennium@v1.0.2
+go get github.com/li-bao-jia/millennium@latest
 ```
 
 ## 快速开始 Quick Start
