@@ -3,10 +3,10 @@ package test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/balance"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/order"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/product"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/balance"
+	"github.com/li-bao-jia/millennium/pkg/order"
+	"github.com/li-bao-jia/millennium/pkg/product"
 	"testing"
 )
 
@@ -18,13 +18,13 @@ func TestListProduct(t *testing.T) {
 	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
 	appSecret := "0a091b3aa4324435aab703142518a8f7"
 
-	client := millennium_go_sdk.NewApiClient(appKey, appSecret)
+	client := millennium.NewApiClient(appKey, appSecret)
 
 	// 设置是否使用http，ture为http，false为https
 	// client.SetHttp(true)
 
 	// 设置开发者模式，true为开发模式，false为正式模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 
 	// 调用接口
 	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
@@ -57,10 +57,10 @@ func TestChargeOrder(t *testing.T) {
 	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
 	appSecret := "0a091b3aa4324435aab703142518a8f7"
 
-	client := millennium_go_sdk.NewApiClient(appKey, appSecret)
+	client := millennium.NewApiClient(appKey, appSecret)
 
 	// 设置开发者模式
-	client.SetDevelopment(true)
+	client.SetDev(true)
 
 	// 设置请求参数
 	data := order.ChargeOrderParams{
@@ -100,10 +100,10 @@ func TestCardOrder(t *testing.T) {
 	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
 	appSecret := "0a091b3aa4324435aab703142518a8f7"
 
-	client := millennium_go_sdk.NewApiClient(appKey, appSecret)
+	client := millennium.NewApiClient(appKey, appSecret)
 
 	// 设置开发者模式
-	client.SetDevelopment(true)
+	client.SetDev(true)
 
 	// 设置请求参数
 	data := order.CardOrderParams{
@@ -142,10 +142,10 @@ func TestQueryOrder(t *testing.T) {
 	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
 	appSecret := "0a091b3aa4324435aab703142518a8f7"
 
-	client := millennium_go_sdk.NewApiClient(appKey, appSecret)
+	client := millennium.NewApiClient(appKey, appSecret)
 
 	// 设置开发者模式
-	client.SetDevelopment(true)
+	client.SetDev(true)
 
 	// 设置请求参数
 	data := order.QueryOrderParams{
@@ -181,10 +181,10 @@ func TestQueryOrder(t *testing.T) {
 		for i, card := range cards {
 			// 卡密解密
 			var CardPwd, CardNumber string
-			if CardPwd, err = order.DecryptAES256ECB(card.CardPwd, appSecret); err != nil {
+			if CardPwd, err = client.DecryptAES256ECB(card.CardPwd); err != nil {
 				return
 			}
-			if CardNumber, err = order.DecryptAES256ECB(card.CardNumber, appSecret); err != nil {
+			if CardNumber, err = client.DecryptAES256ECB(card.CardNumber); err != nil {
 				return
 			}
 			cards[i].CardPwd = CardPwd
@@ -204,10 +204,10 @@ func TestBalance(t *testing.T) {
 	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
 	appSecret := "0a091b3aa4324435aab703142518a8f7"
 
-	client := millennium_go_sdk.NewApiClient(appKey, appSecret)
+	client := millennium.NewApiClient(appKey, appSecret)
 
 	// 设置开发者模式
-	client.SetDevelopment(true)
+	client.SetDev(true)
 
 	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
 	if err != nil {
