@@ -6,10 +6,6 @@ func (p *ListProduct) GetMethod() string {
 	return "product/list"
 }
 
-func (p *ListProduct) GetResponse() interface{} {
-	return ""
-}
-
 type ListProductParams struct {
 	ProductType string `json:"product_type"`
 }

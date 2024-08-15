@@ -14,7 +14,7 @@
 你可以直接使用 go get 安装：
 
 ```
-    go get github.com/li-bao-jia/millennium-go-sdk
+go get github.com/li-bao-jia/millennium@latest
 ```
 
 ## 快速开始 Quick Start
@@ -26,18 +26,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/product"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/product"
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置是否使用http，ture为http，false为https
 	// client.SetHttp(true)
 
 	// 设置开发者模式，true为开发模式，false为正式模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 
 	// 调用接口
 	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
@@ -72,15 +72,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/order"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/order"
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 
 	// 设置请求参数
 	data := order.ChargeOrderParams{
@@ -121,15 +121,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/order"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/order"
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 	
 	// 设置请求参数
 	data := order.CardOrderParams{
@@ -169,15 +169,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/order"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/order"
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 	
 	// 设置请求参数
 	data := order.QueryOrderParams{
@@ -215,10 +215,10 @@ func main() {
 		for i, card := range cards {
 			// 卡密解密
 			var CardPwd, CardNumber string
-			if CardPwd, err = order.DecryptAES256ECB(card.CardPwd, appSecret); err != nil {
+			if CardPwd, err = client.DecryptAES256ECB(card.CardPwd); err != nil {
 				return
 			}
-			if CardNumber, err = order.DecryptAES256ECB(card.CardNumber, appSecret); err != nil {
+			if CardNumber, err = client.DecryptAES256ECB(card.CardNumber); err != nil {
 				return
 			}
 			cards[i].CardPwd = CardPwd
@@ -238,15 +238,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/li-bao-jia/millennium-go-sdk"
-	"github.com/li-bao-jia/millennium-go-sdk/pkg/balance"
+	"github.com/li-bao-jia/millennium"
+	"github.com/li-bao-jia/millennium/pkg/balance"
 )
 
 func main() {
-	client := millennium_go_sdk.NewApiClient("appKey", "appSecret")
+	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 	
 	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
 	if err != nil {

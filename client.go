@@ -1,20 +1,19 @@
-package millennium_go_sdk
+package millennium
 
 import (
-	"github.com/li-bao-jia/millennium-go-sdk/pkg"
-)
-
-var (
-	Http        = false                     // 是否使用http协议 ture为http，false为https
-	Development = false                     // 是否为开发模式 ture为开发模式，false为正式模式
-	Version     = "v1"                      // 请求的版本
-	Domain      = "openapi.qianxiquan.com"  // 正式域名
-	DevDomain   = "testopen.qianxiquan.com" // 开发域名
+	"encoding/base64"
+	"github.com/forgoer/openssl"
+	"github.com/li-bao-jia/millennium/pkg"
 )
 
 type ApiClient struct {
-	AppKey string
-	Secret string
+	appKey    string
+	secret    string
+	isDev     bool   // 是否为开发模式 ture为开发模式，false为正式模式
+	isHttp    bool   // 是否使用http协议 ture为http，false为https
+	version   string // 请求版本
+	domain    string // 正式域名
+	devDomain string // 开发域名
 }
 
 /**
@@ -22,7 +21,15 @@ type ApiClient struct {
  */
 
 func NewApiClient(appKey, secret string) *ApiClient {
-	return &ApiClient{AppKey: appKey, Secret: secret}
+	return &ApiClient{
+		appKey:    appKey,
+		secret:    secret,
+		isDev:     false,
+		isHttp:    false,
+		version:   "v1",
+		domain:    "openapi.qianxiquan.com",
+		devDomain: "testopen.qianxiquan.com",
+	}
 }
 
 /**
@@ -31,12 +38,20 @@ func NewApiClient(appKey, secret string) *ApiClient {
 
 func (a *ApiClient) CallApi(o pkg.IOperate, data interface{}) (res pkg.ApiResponse, err error) {
 	var paramStr string
-	if paramStr, err = pkg.PostParams(a.AppKey, a.Secret, data); err != nil {
+	if paramStr, err = pkg.PostParams(a.appKey, a.secret, data); err != nil {
 		return
 	}
 
-	res, err = pkg.Post(a.GetUrl()+o.GetMethod(), paramStr)
+	res, err = pkg.Post(a.getUrl()+o.GetMethod(), paramStr)
 	return
+}
+
+/**
+ * @Description:定义请求的模式，true为开发模式，false为正式模式
+ */
+
+func (a *ApiClient) SetDev(d bool) {
+	a.isDev = d
 }
 
 /**
@@ -44,7 +59,7 @@ func (a *ApiClient) CallApi(o pkg.IOperate, data interface{}) (res pkg.ApiRespon
  */
 
 func (a *ApiClient) SetHttp(h bool) {
-	Http = h
+	a.isHttp = h
 }
 
 /**
@@ -52,31 +67,43 @@ func (a *ApiClient) SetHttp(h bool) {
  */
 
 func (a *ApiClient) SetVersion(v string) {
-	Version = v
+	a.version = v
 }
 
 /**
- * @Description:定义请求的模式，true为开发模式，false为正式模式
+ * @Description:DecryptAES256ECB 实现 AES-256 ECB 模式解密
  */
 
-func (a *ApiClient) SetDevelopment(d bool) {
-	Development = d
+func (a *ApiClient) DecryptAES256ECB(pass string) (str string, err error) {
+	cardNumberRes, err := base64.StdEncoding.DecodeString(pass)
+	if err != nil {
+		return
+	}
+
+	r, err := openssl.AesECBDecrypt(cardNumberRes, []byte(a.secret), openssl.PKCS7_PADDING)
+	if err != nil {
+		return
+	}
+
+	str = string(r)
+
+	return
 }
 
 /**
  * @Description:获取请求的域名
  */
 
-func (a *ApiClient) GetUrl() string {
+func (a *ApiClient) getUrl() string {
 	https := "https"
-	if Http {
+	if a.isHttp {
 		https = "http"
 	}
 
-	domain := Domain
-	if Development {
-		domain = DevDomain
+	domain := a.domain
+	if a.isDev {
+		domain = a.devDomain
 	}
 
-	return https + "://" + domain + "/" + Version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
+	return https + "://" + domain + "/" + a.version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
 }
