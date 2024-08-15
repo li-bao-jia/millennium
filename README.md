@@ -37,7 +37,7 @@ func main() {
 	// client.SetHttp(true)
 
 	// 设置开发者模式，true为开发模式，false为正式模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 
 	// 调用接口
 	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
@@ -80,7 +80,7 @@ func main() {
 	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 
 	// 设置请求参数
 	data := order.ChargeOrderParams{
@@ -129,7 +129,7 @@ func main() {
 	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 	
 	// 设置请求参数
 	data := order.CardOrderParams{
@@ -177,7 +177,7 @@ func main() {
 	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 	
 	// 设置请求参数
 	data := order.QueryOrderParams{
@@ -246,7 +246,7 @@ func main() {
 	client := millennium.NewApiClient("appKey", "appSecret")
 
 	// 设置开发者模式
-	// client.SetDevelopment(true)
+	// client.SetDev(true)
 	
 	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
 	if err != nil {
