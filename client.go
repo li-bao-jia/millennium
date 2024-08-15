@@ -5,13 +5,13 @@ import (
 )
 
 type ApiClient struct {
-	AppKey    string
-	Secret    string
-	Version   string // 请求的版本
-	IsDev     bool   // 是否为开发模式 ture为开发模式，false为正式模式
-	IsHttp    bool   // 是否使用http协议 ture为http，false为https
-	Domain    string // 正式域名
-	DevDomain string // 开发域名
+	appKey    string
+	secret    string
+	isDev     bool   // 是否为开发模式 ture为开发模式，false为正式模式
+	isHttp    bool   // 是否使用http协议 ture为http，false为https
+	version   string // 请求版本
+	domain    string // 正式域名
+	devDomain string // 开发域名
 }
 
 /**
@@ -20,13 +20,13 @@ type ApiClient struct {
 
 func NewApiClient(appKey, secret string) *ApiClient {
 	return &ApiClient{
-		AppKey:    appKey,
-		Secret:    secret,
-		IsHttp:    false,
-		IsDev:     false,
-		Version:   "v1",
-		Domain:    "openapi.qianxiquan.com",
-		DevDomain: "testopen.qianxiquan.com",
+		appKey:    appKey,
+		secret:    secret,
+		isDev:     false,
+		isHttp:    false,
+		version:   "v1",
+		domain:    "openapi.qianxiquan.com",
+		devDomain: "testopen.qianxiquan.com",
 	}
 }
 
@@ -36,12 +36,20 @@ func NewApiClient(appKey, secret string) *ApiClient {
 
 func (a *ApiClient) CallApi(o pkg.IOperate, data interface{}) (res pkg.ApiResponse, err error) {
 	var paramStr string
-	if paramStr, err = pkg.PostParams(a.AppKey, a.Secret, data); err != nil {
+	if paramStr, err = pkg.PostParams(a.appKey, a.secret, data); err != nil {
 		return
 	}
 
-	res, err = pkg.Post(a.GetUrl()+o.GetMethod(), paramStr)
+	res, err = pkg.Post(a.getUrl()+o.GetMethod(), paramStr)
 	return
+}
+
+/**
+ * @Description:定义请求的模式，true为开发模式，false为正式模式
+ */
+
+func (a *ApiClient) SetDev(d bool) {
+	a.isDev = d
 }
 
 /**
@@ -49,7 +57,7 @@ func (a *ApiClient) CallApi(o pkg.IOperate, data interface{}) (res pkg.ApiRespon
  */
 
 func (a *ApiClient) SetHttp(h bool) {
-	a.IsHttp = h
+	a.isHttp = h
 }
 
 /**
@@ -57,31 +65,23 @@ func (a *ApiClient) SetHttp(h bool) {
  */
 
 func (a *ApiClient) SetVersion(v string) {
-	a.Version = v
-}
-
-/**
- * @Description:定义请求的模式，true为开发模式，false为正式模式
- */
-
-func (a *ApiClient) SetDevelopment(d bool) {
-	a.IsDev = d
+	a.version = v
 }
 
 /**
  * @Description:获取请求的域名
  */
 
-func (a *ApiClient) GetUrl() string {
+func (a *ApiClient) getUrl() string {
 	https := "https"
-	if a.IsHttp {
+	if a.isHttp {
 		https = "http"
 	}
 
-	domain := a.Domain
-	if a.IsDev {
-		domain = a.DevDomain
+	domain := a.domain
+	if a.isDev {
+		domain = a.devDomain
 	}
 
-	return https + "://" + domain + "/" + a.Version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
+	return https + "://" + domain + "/" + a.version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
 }
