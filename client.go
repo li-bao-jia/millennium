@@ -4,17 +4,14 @@ import (
 	"github.com/li-bao-jia/millennium/pkg"
 )
 
-var (
-	Http        = false                     // 是否使用http协议 ture为http，false为https
-	Development = false                     // 是否为开发模式 ture为开发模式，false为正式模式
-	Version     = "v1"                      // 请求的版本
-	Domain      = "openapi.qianxiquan.com"  // 正式域名
-	DevDomain   = "testopen.qianxiquan.com" // 开发域名
-)
-
 type ApiClient struct {
-	AppKey string
-	Secret string
+	AppKey    string
+	Secret    string
+	Version   string // 请求的版本
+	IsDev     bool   // 是否为开发模式 ture为开发模式，false为正式模式
+	IsHttp    bool   // 是否使用http协议 ture为http，false为https
+	Domain    string // 正式域名
+	DevDomain string // 开发域名
 }
 
 /**
@@ -22,7 +19,15 @@ type ApiClient struct {
  */
 
 func NewApiClient(appKey, secret string) *ApiClient {
-	return &ApiClient{AppKey: appKey, Secret: secret}
+	return &ApiClient{
+		AppKey:    appKey,
+		Secret:    secret,
+		IsHttp:    false,
+		IsDev:     false,
+		Version:   "v1",
+		Domain:    "openapi.qianxiquan.com",
+		DevDomain: "testopen.qianxiquan.com",
+	}
 }
 
 /**
@@ -44,7 +49,7 @@ func (a *ApiClient) CallApi(o pkg.IOperate, data interface{}) (res pkg.ApiRespon
  */
 
 func (a *ApiClient) SetHttp(h bool) {
-	Http = h
+	a.IsHttp = h
 }
 
 /**
@@ -52,7 +57,7 @@ func (a *ApiClient) SetHttp(h bool) {
  */
 
 func (a *ApiClient) SetVersion(v string) {
-	Version = v
+	a.Version = v
 }
 
 /**
@@ -60,7 +65,7 @@ func (a *ApiClient) SetVersion(v string) {
  */
 
 func (a *ApiClient) SetDevelopment(d bool) {
-	Development = d
+	a.IsDev = d
 }
 
 /**
@@ -69,14 +74,14 @@ func (a *ApiClient) SetDevelopment(d bool) {
 
 func (a *ApiClient) GetUrl() string {
 	https := "https"
-	if Http {
+	if a.IsHttp {
 		https = "http"
 	}
 
-	domain := Domain
-	if Development {
-		domain = DevDomain
+	domain := a.Domain
+	if a.IsDev {
+		domain = a.DevDomain
 	}
 
-	return https + "://" + domain + "/" + Version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
+	return https + "://" + domain + "/" + a.Version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
 }
