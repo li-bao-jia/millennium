@@ -1,5 +1,18 @@
-<p align="center">millennium SDK</p>
-<p align="center">千禧券GO SDK，用于对接千禧券供应链平台</p>
+<div align=center>
+  <p align="center">millennium SDK</p>
+  <p align="center">千禧券GO SDK，用于对接千禧券供应链平台</p>
+</div>
+
+<div align=center>
+  <p align="center">
+    <a href="https://github.com/li-bao-jia">
+      <img src="https://img.shields.io/badge/go-1.21.8-blue" alt="Build Status">
+    </a>
+    <a href="https://github.com/li-bao-jia">
+      <img src="https://img.shields.io/github/license/li-bao-jia/millennium" alt="License">
+    </a>
+  </p>
+</div>
 
 
 ### 项目概述
