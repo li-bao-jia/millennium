@@ -287,10 +287,10 @@ func main() {
 
 ### 联系方式
 
-- DEVELOPER: BaoJia Li
+- 开发者: BaoJia Li
 
 - QQ: 751818588
 
 - QQ群: 232185834
 
-- EMAIL: livsyitian@163.com
+- 邮箱: livsyitian@163.com
