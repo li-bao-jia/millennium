@@ -7,11 +7,10 @@ import (
 )
 
 type ApiClient struct {
-	appKey    string
-	secret    string
-	version   string // 请求版本
-	domain    string // 正式域名
-	devDomain string // 开发域名
+	appKey  string
+	secret  string
+	version string // 请求版本
+	domain  string // 请求域名（https://www.aaa.com 或 http://www.aaa.com）
 }
 
 /**
