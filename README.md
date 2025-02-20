@@ -44,13 +44,12 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
 
 	// 设置是否使用http，ture为http，false为https
 	// client.SetHttp(true)
-
-	// 设置开发者模式，true为开发模式，false为正式模式
-	// client.SetDev(true)
 
 	// 调用接口
 	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
@@ -90,11 +89,10 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
-
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
+	 
 	// 设置请求参数
 	data := order.ChargeOrderParams{
 		ProductId:  6,             // 千禧券商品ID
@@ -139,10 +137,9 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
 	
 	// 设置请求参数
 	data := order.CardOrderParams{
@@ -187,10 +184,9 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
 	
 	// 设置请求参数
 	data := order.QueryOrderParams{
@@ -256,10 +252,9 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
 	
 	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
 	if err != nil {

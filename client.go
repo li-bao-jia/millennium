@@ -9,7 +9,6 @@ import (
 type ApiClient struct {
 	appKey    string
 	secret    string
-	isDev     bool   // 是否为开发模式 ture为开发模式，false为正式模式
 	isHttp    bool   // 是否使用http协议 ture为http，false为https
 	version   string // 请求版本
 	domain    string // 正式域名
@@ -18,17 +17,18 @@ type ApiClient struct {
 
 /**
  * @Description:创建一个新的ApiClient
+ * @param appKey
+ * @param secret
+ * @param domain 根据域名控制控制正式环境 或 测试环境
  */
 
-func NewApiClient(appKey, secret string) *ApiClient {
+func NewApiClient(appKey, secret, domain string) *ApiClient {
 	return &ApiClient{
-		appKey:    appKey,
-		secret:    secret,
-		isDev:     false,
-		isHttp:    false,
-		version:   "v1",
-		domain:    "openapi.qianxiquan.com",
-		devDomain: "testopen.qianxiquan.com",
+		appKey:  appKey,
+		secret:  secret,
+		isHttp:  false,
+		version: "v1",
+		domain:  domain,
 	}
 }
 
@@ -44,14 +44,6 @@ func (a *ApiClient) CallApi(o pkg.IOperate, data interface{}) (res pkg.ApiRespon
 
 	res, err = pkg.Post(a.getUrl()+o.GetMethod(), paramStr)
 	return
-}
-
-/**
- * @Description:定义请求的模式，true为开发模式，false为正式模式
- */
-
-func (a *ApiClient) SetDev(d bool) {
-	a.isDev = d
 }
 
 /**
@@ -100,10 +92,5 @@ func (a *ApiClient) getUrl() string {
 		https = "http"
 	}
 
-	domain := a.domain
-	if a.isDev {
-		domain = a.devDomain
-	}
-
-	return https + "://" + domain + "/" + a.version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
+	return https + "://" + a.domain + "/" + a.version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
 }
