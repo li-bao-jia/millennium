@@ -46,10 +46,7 @@ import (
 func main() {
 	// appKey、appSecret、domainURL向平台获取
 	// 根据domainURL控制请求方式为开发模式 或 正式模式
-	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
-
-	// 设置是否使用http，ture为http，false为https
-	// client.SetHttp(true)
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 
 	// 调用接口
 	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
@@ -91,7 +88,7 @@ import (
 func main() {
 	// appKey、appSecret、domainURL向平台获取
 	// 根据domainURL控制请求方式为开发模式 或 正式模式
-	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 	 
 	// 设置请求参数
 	data := order.ChargeOrderParams{
@@ -139,7 +136,7 @@ import (
 func main() {
 	// appKey、appSecret、domainURL向平台获取
 	// 根据domainURL控制请求方式为开发模式 或 正式模式
-	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 	
 	// 设置请求参数
 	data := order.CardOrderParams{
@@ -186,7 +183,7 @@ import (
 func main() {
 	// appKey、appSecret、domainURL向平台获取
 	// 根据domainURL控制请求方式为开发模式 或 正式模式
-	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 	
 	// 设置请求参数
 	data := order.QueryOrderParams{
@@ -254,7 +251,7 @@ import (
 func main() {
 	// appKey、appSecret、domainURL向平台获取
 	// 根据domainURL控制请求方式为开发模式 或 正式模式
-	client := millennium.NewApiClient("appKey", "appSecret", "domainURL")
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 	
 	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
 	if err != nil {

@@ -9,7 +9,6 @@ import (
 type ApiClient struct {
 	appKey    string
 	secret    string
-	isHttp    bool   // 是否使用http协议 ture为http，false为https
 	version   string // 请求版本
 	domain    string // 正式域名
 	devDomain string // 开发域名
@@ -22,11 +21,10 @@ type ApiClient struct {
  * @param domain 根据域名控制控制正式环境 或 测试环境
  */
 
-func NewApiClient(appKey, secret, domain string) *ApiClient {
+func NewApiClient(domain, appKey, secret string) *ApiClient {
 	return &ApiClient{
 		appKey:  appKey,
 		secret:  secret,
-		isHttp:  false,
 		version: "v1",
 		domain:  domain,
 	}
@@ -44,14 +42,6 @@ func (a *ApiClient) CallApi(o pkg.IOperate, data interface{}) (res pkg.ApiRespon
 
 	res, err = pkg.Post(a.getUrl()+o.GetMethod(), paramStr)
 	return
-}
-
-/**
- * @Description:定义请求的http协议 ture为http，false为https
- */
-
-func (a *ApiClient) SetHttp(h bool) {
-	a.isHttp = h
 }
 
 /**
@@ -87,10 +77,5 @@ func (a *ApiClient) DecryptAES256ECB(pass string) (str string, err error) {
  */
 
 func (a *ApiClient) getUrl() string {
-	https := "https"
-	if a.isHttp {
-		https = "http"
-	}
-
-	return https + "://" + a.domain + "/" + a.version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
+	return a.domain + "/" + a.version + "/" // fmt.Sprintf("%s://%s/%s/", https, domain, Version)
 }
