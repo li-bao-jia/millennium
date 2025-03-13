@@ -1,5 +1,18 @@
-<p align="center">millennium SDK</p>
-<p align="center">千禧券GO SDK，用于对接千禧券供应链平台</p>
+<div align=center>
+  <p align="center">millennium SDK</p>
+  <p align="center">千禧券GO SDK，用于对接千禧券供应链平台</p>
+</div>
+
+<div align=center>
+  <p align="center">
+    <a href="https://github.com/li-bao-jia">
+      <img src="https://img.shields.io/badge/go-1.21.8-blue" alt="Build Status">
+    </a>
+    <a href="https://github.com/li-bao-jia">
+      <img src="https://img.shields.io/github/license/li-bao-jia/millennium" alt="License">
+    </a>
+  </p>
+</div>
 
 
 ### 项目概述
@@ -31,13 +44,9 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置是否使用http，ture为http，false为https
-	// client.SetHttp(true)
-
-	// 设置开发者模式，true为开发模式，false为正式模式
-	// client.SetDev(true)
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 
 	// 调用接口
 	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
@@ -77,11 +86,10 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
-
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
+	 
 	// 设置请求参数
 	data := order.ChargeOrderParams{
 		ProductId:  6,             // 千禧券商品ID
@@ -126,10 +134,9 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 	
 	// 设置请求参数
 	data := order.CardOrderParams{
@@ -174,10 +181,9 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 	
 	// 设置请求参数
 	data := order.QueryOrderParams{
@@ -243,10 +249,9 @@ import (
 )
 
 func main() {
-	client := millennium.NewApiClient("appKey", "appSecret")
-
-	// 设置开发者模式
-	// client.SetDev(true)
+	// appKey、appSecret、domainURL向平台获取
+	// 根据domainURL控制请求方式为开发模式 或 正式模式
+	client := millennium.NewApiClient("domainURL", "appKey", "appSecret")
 	
 	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
 	if err != nil {
@@ -274,8 +279,10 @@ func main() {
 
 ### 联系方式
 
-- DEVELOPER: BaoJia Li
+- 开发者: BaoJia Li
 
 - QQ: 751818588
 
-- EMAIL: livsyitian@163.com
+- QQ群: 232185834
+
+- 邮箱: livsyitian@163.com
