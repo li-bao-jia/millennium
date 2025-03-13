@@ -15,16 +15,11 @@ import (
  */
 func TestListProduct(t *testing.T) {
 
-	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
-	appSecret := "0a091b3aa4324435aab703142518a8f7"
+	domainURL := ""
+	appId := ""
+	appSecret := ""
 
-	client := millennium.NewApiClient(appKey, appSecret)
-
-	// 设置是否使用http，ture为http，false为https
-	// client.SetHttp(true)
-
-	// 设置开发者模式，true为开发模式，false为正式模式
-	// client.SetDev(true)
+	client := millennium.NewApiClient(domainURL, appId, appSecret)
 
 	// 调用接口
 	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
@@ -54,13 +49,11 @@ func TestListProduct(t *testing.T) {
  */
 func TestChargeOrder(t *testing.T) {
 
-	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
-	appSecret := "0a091b3aa4324435aab703142518a8f7"
+	domainURL := ""
+	appId := ""
+	appSecret := ""
 
-	client := millennium.NewApiClient(appKey, appSecret)
-
-	// 设置开发者模式
-	client.SetDev(true)
+	client := millennium.NewApiClient(domainURL, appId, appSecret)
 
 	// 设置请求参数
 	data := order.ChargeOrderParams{
@@ -97,13 +90,11 @@ func TestChargeOrder(t *testing.T) {
  */
 func TestCardOrder(t *testing.T) {
 
-	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
-	appSecret := "0a091b3aa4324435aab703142518a8f7"
+	domainURL := ""
+	appId := ""
+	appSecret := ""
 
-	client := millennium.NewApiClient(appKey, appSecret)
-
-	// 设置开发者模式
-	client.SetDev(true)
+	client := millennium.NewApiClient(domainURL, appId, appSecret)
 
 	// 设置请求参数
 	data := order.CardOrderParams{
@@ -139,13 +130,11 @@ func TestCardOrder(t *testing.T) {
  */
 func TestQueryOrder(t *testing.T) {
 
-	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
-	appSecret := "0a091b3aa4324435aab703142518a8f7"
+	domainURL := ""
+	appId := ""
+	appSecret := ""
 
-	client := millennium.NewApiClient(appKey, appSecret)
-
-	// 设置开发者模式
-	client.SetDev(true)
+	client := millennium.NewApiClient(domainURL, appId, appSecret)
 
 	// 设置请求参数
 	data := order.QueryOrderParams{
@@ -201,13 +190,11 @@ func TestQueryOrder(t *testing.T) {
  */
 func TestBalance(t *testing.T) {
 
-	appKey := "8DVI1nCM6SEgi0T3HhUI1J2EQJA4sCKAiLCHU5xAuI5YKXZoEd0ysRQdaHU2DNJc"
-	appSecret := "0a091b3aa4324435aab703142518a8f7"
+	domainURL := ""
+	appId := ""
+	appSecret := ""
 
-	client := millennium.NewApiClient(appKey, appSecret)
-
-	// 设置开发者模式
-	client.SetDev(true)
+	client := millennium.NewApiClient(domainURL, appId, appSecret)
 
 	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
 	if err != nil {
