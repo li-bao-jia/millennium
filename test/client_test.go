@@ -1,7 +1,6 @@
 package test
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/li-bao-jia/millennium"
 	"github.com/li-bao-jia/millennium/pkg/balance"
@@ -10,209 +9,226 @@ import (
 	"testing"
 )
 
+var (
+	domain    = ""
+	appId     = ""
+	appSecret = ""
+)
+
 /**
- * @Description:测试商品列表获取API
+ * @Description:测试余额查询接口
  */
-func TestListProduct(t *testing.T) {
+func TestBalanceQuery(t *testing.T) {
+	client := millennium.NewApiClient(domain, appId, appSecret)
 
-	domainURL := ""
-	appId := ""
-	appSecret := ""
-
-	client := millennium.NewApiClient(domainURL, appId, appSecret)
-
-	// 调用接口
-	resp, err := client.CallApi(&product.ListProduct{}, product.ListProductParams{})
-	if err != nil {
+	var (
+		err      error
+		query    balance.Query
+		response balance.QueryResponse
+	)
+	if err, response = query.Handle(client); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	if resp.Code != 0 {
-		fmt.Println(resp.Msg)
+	if response.Code != "00" {
+		fmt.Println(response.Msg)
 		return
 	}
 
-	// 转换商品
-	var products []product.Product
-	if err = json.Unmarshal([]byte(resp.Data), &products); err != nil {
-		fmt.Println(resp.Msg)
-		return
-	}
-
-	fmt.Printf("返回商品数量: %d", len(products))
-	fmt.Printf("返回商品数据: %s", resp.Data)
+	fmt.Printf("余额: %s", response.Balance)
 }
 
 /**
- * @Description:测试直充订单提交API
+ * @Description:测试商品同步接口
  */
-func TestChargeOrder(t *testing.T) {
+func TestProductQuery(t *testing.T) {
+	client := millennium.NewApiClient(domain, appId, appSecret)
 
-	domainURL := ""
-	appId := ""
-	appSecret := ""
-
-	client := millennium.NewApiClient(domainURL, appId, appSecret)
-
-	// 设置请求参数
-	data := order.ChargeOrderParams{
-		ProductId:  6,             // 千禧券商品ID
-		OutOrderNo: "20240801001", // 单号
-		Account:    "13188889999", // 充值账号
-		BuyNum:     1,             // 购买数量（⚠️：目前只支持单笔充值）
-	}
-
-	resp, err := client.CallApi(&order.ChargeOrder{}, data)
-	if err != nil {
+	var (
+		err      error
+		query    product.Query
+		response product.QueryResponse
+	)
+	if err, response = query.Handle(client); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	if resp.Code != 0 {
-		fmt.Println(resp.Msg)
+	if response.Code != "00" {
+		fmt.Println(response.Msg)
 		return
 	}
 
-	// 转换订单数据
-	var cOrder order.Order
-	if err = json.Unmarshal([]byte(resp.Data), &cOrder); err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Printf("返回直充订单数据: %s", resp.Data)
-	//{"order_no":"20240801160211515353556570","out_order_no":"20240801001","product_id":6,"product_name":"京东E卡100元直充","account":"13188889999","buy_num":1,"order_type":2,"order_price":"100.00","order_state":"processing","create_time":"2024-08-01 16:02:11","finish_time":null,"operator_serial_number":""}
+	fmt.Printf("返回商品数量: %d", len(response.Data))
 }
 
 /**
- * @Description:测试卡密订单提交API
+ * @Description:测试通用直充接口
  */
-func TestCardOrder(t *testing.T) {
+func TestOrderSubmit(t *testing.T) {
+	client := millennium.NewApiClient(domain, appId, appSecret)
 
-	domainURL := ""
-	appId := ""
-	appSecret := ""
-
-	client := millennium.NewApiClient(domainURL, appId, appSecret)
-
-	// 设置请求参数
-	data := order.CardOrderParams{
-		ProductId:  8,             // 千禧券商品ID
-		OutOrderNo: "20240801002", // 单号
-		BuyNum:     2,             // 购买数量（⚠️：目前单笔数量最大50）
+	var params = order.SubmitParams{
+		OutOrderID:  "20240801001",
+		UUID:        "751818588",
+		ItemID:      "10001",
+		ItemFace:    "100.00",
+		Amount:      "1",
+		CallbackURL: "",
+		SMSCode:     "",
+		Ext1:        "",
+		Ext2:        "",
+		Ext3:        "",
 	}
 
-	resp, err := client.CallApi(&order.CardOrder{}, data)
-	if err != nil {
+	var (
+		err      error
+		query    order.Submit
+		response order.SubmitResponse
+	)
+	if err, response = query.Handle(client, params); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	if resp.Code != 0 {
-		fmt.Println(resp.Msg)
+	if response.Code != "00" {
+		fmt.Println(response.Msg)
 		return
 	}
 
-	// 转换订单数据
-	var cOrder order.Order
-	if err = json.Unmarshal([]byte(resp.Data), &cOrder); err != nil {
+	fmt.Printf("返回平台订单号: %s", response.OrderID)
+}
+
+/**
+ * @Description:测试话费直充接口
+ */
+func TestHfSubmit(t *testing.T) {
+	client := millennium.NewApiClient(domain, appId, appSecret)
+
+	var params = order.HfSubmitParams{
+		OutOrderID:   "20240801001",
+		UUID:         "751818588",
+		ItemID:       "10001",
+		ItemFace:     "100.00",
+		CallbackURL:  "",
+		Isp:          "",
+		ProvinceCode: "",
+		ProvinceName: "",
+		Timeout:      "",
+		SMSCode:      "",
+	}
+
+	var (
+		err      error
+		query    order.HfSubmit
+		response order.HfSubmitResponse
+	)
+	if err, response = query.Handle(client, params); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Printf("返回卡密订单数据: %s", resp.Data)
-	//{"order_no":"20240801160550696865566968","out_order_no":"20240801002","product_id":8,"product_name":"卡密测试商品","buy_num":2,"order_type":1,"order_price":"10.00","order_state":"processing","create_time":"2024-08-01 16:05:50","finish_time":null,"operator_serial_number":""}
+	if response.Code != "00" {
+		fmt.Println(response.Msg)
+		return
+	}
+
+	fmt.Printf("返回平台订单号: %s", response.OrderID)
+}
+
+/**
+ * @Description:测试卡券提取接口
+ */
+func TestCardSubmit(t *testing.T) {
+	client := millennium.NewApiClient(domain, appId, appSecret)
+
+	var params = order.CardSubmitParams{
+		OutOrderID:  "20240801001",
+		UUID:        "751818588",
+		ItemID:      "10001",
+		ItemFace:    "100.00",
+		Amount:      "1",
+		SupplyMode:  "",
+		CallbackURL: "",
+		PhoneNo:     "",
+		Ext1:        "",
+		Ext2:        "",
+		Ext3:        "",
+	}
+
+	var (
+		err      error
+		query    order.CardSubmit
+		response order.CardSubmitResponse
+	)
+	if err, response = query.Handle(client, params); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if response.Code != "00" {
+		fmt.Println(response.Msg)
+		return
+	}
+
+	fmt.Printf("返回平台订单号: %s", response.OrderID)
 }
 
 /**
  * @Description:测试查询订单提交API
  */
-func TestQueryOrder(t *testing.T) {
+func TestOrderQuery(t *testing.T) {
+	client := millennium.NewApiClient(domain, appId, appSecret)
 
-	domainURL := ""
-	appId := ""
-	appSecret := ""
-
-	client := millennium.NewApiClient(domainURL, appId, appSecret)
-
-	// 设置请求参数
-	data := order.QueryOrderParams{
-		OutOrderNo: "20240801002",
+	// 查询参数
+	var params = order.QueryParams{
+		OrderID:    "201701010101010001", // orderId与outOrderId至少填写1项，如都填写以orderId进行查询
+		OutOrderNo: "cy1017010101010101",
 	}
 
-	resp, err := client.CallApi(&order.QueryOrder{}, data)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if resp.Code != 0 {
-		t.Fatal(resp.Msg)
-	}
-
-	// 转换订单数据
-	var cOrder order.Order
-	if err = json.Unmarshal([]byte(resp.Data), &cOrder); err != nil {
-		t.Fatal(err)
-	}
-
-	// 转换卡密数据 千禧券数据1卡密2直充
-	if cOrder.OrderType == 1 {
-		var cards []order.Card
-		if err = json.Unmarshal([]byte(cOrder.Cards), &cards); err != nil {
-			return
-		}
-		t.Logf("返回卡密数量: %d", len(cards))
-		t.Logf("返回卡密数据: %s", cOrder.Cards)
-		//[{"card_number":"aX0Z5kocbVsW3K0YaS2jNuf8tAaiQfNL7JlorlnOem4=","card_pwd":"vghJjofPK8PjVXeYrFta0y7ugv2ufinxFZtD+BqrvOX5oMllmH2sVlT47MlSPh09","card_deadline":"2045-03-31 23:59:59"},{"card_number":"Oyms4YwVN2tEjZQMaSVIL\/6+S4SXsEAYIRq5jNbWHr4=","card_pwd":"n8jrqZbU8\/oNoRDUh9RHWNLhkiF1QJHBdy\/MR7tKnyL5oMllmH2sVlT47MlSPh09","card_deadline":"2045-03-31 23:59:59"}]
-
-		// 卡密数据使用时，需要解密显示
-		for i, card := range cards {
-			// 卡密解密
-			var CardPwd, CardNumber string
-			if CardPwd, err = client.DecryptAES256ECB(card.CardPwd); err != nil {
-				return
-			}
-			if CardNumber, err = client.DecryptAES256ECB(card.CardNumber); err != nil {
-				return
-			}
-			cards[i].CardPwd = CardPwd
-			cards[i].CardNumber = CardNumber
-		}
-	}
-
-	t.Logf("返回订单数据: %s", resp.Data)
-	//{"order_no":"20240801160550696865566968","out_order_no":"20240801002","product_id":8,"product_name":"卡密测试商品","account":"","buy_num":2,"order_type":1,"order_price":"10.00","order_state":"success","order_service_state":"null","create_time":"2024-08-01 16:05:50","finish_time":"2024-08-01 16:08:03","cards":"[{\"card_number\":\"aX0Z5kocbVsW3K0YaS2jNuf8tAaiQfNL7JlorlnOem4=\",\"card_pwd\":\"vghJjofPK8PjVXeYrFta0y7ugv2ufinxFZtD+BqrvOX5oMllmH2sVlT47MlSPh09\",\"card_deadline\":\"2045-03-31 23:59:59\"},{\"card_number\":\"Oyms4YwVN2tEjZQMaSVIL\\\/6+S4SXsEAYIRq5jNbWHr4=\",\"card_pwd\":\"n8jrqZbU8\\\/oNoRDUh9RHWNLhkiF1QJHBdy\\\/MR7tKnyL5oMllmH2sVlT47MlSPh09\",\"card_deadline\":\"2045-03-31 23:59:59\"}]","operator_serial_number":""}
-}
-
-/**
- * @Description:测试商品列表获取API
- */
-func TestBalance(t *testing.T) {
-
-	domainURL := ""
-	appId := ""
-	appSecret := ""
-
-	client := millennium.NewApiClient(domainURL, appId, appSecret)
-
-	resp, err := client.CallApi(&balance.QueryBalance{}, nil)
-	if err != nil {
+	var (
+		err      error
+		query    order.Query
+		response order.QueryResponse
+	)
+	if err, response = query.Handle(client, params); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	if resp.Code != 0 {
-		fmt.Println(resp.Msg)
+	if response.Code != "00" {
+		fmt.Println(response.Msg)
 		return
 	}
 
-	// 转换余额数据
-	var credit balance.CreditBalance
-	if err = json.Unmarshal([]byte(resp.Data), &credit); err != nil {
-		fmt.Println(err)
-		return
-	}
+	fmt.Printf("返回平台订单号: %s", response.OrderID)
 
-	fmt.Printf("返回余额查询数据: %s", resp.Data)
+	// 卡密解密
+	if response.OrderStatus == "2" && len(response.CardData) > 0 {
+		for i, card := range response.CardData {
+			switch card.CardLink {
+			case "LINK":
+				_, link := client.DecryptAES256ECB(card.CardLink)
+
+				fmt.Println("第%d张卡密CardLink：%s", i+1, link)
+			case "PICTURE":
+				_, link := client.DecryptAES256ECB(card.CardLink)
+				_, pwd := client.DecryptAES256ECB(card.CardPwd)
+
+				fmt.Println("第%d张卡密CardLink：%s", i+1, link)
+				fmt.Println("第%d张卡密CardPwd：%s", i+1, pwd)
+			case "PASSWORD":
+				_, pwd := client.DecryptAES256ECB(card.CardPwd)
+
+				fmt.Println("第%d张卡密CardPwd：%s", i+1, pwd)
+			case "NUMBER_PASSWORD":
+				_, no := client.DecryptAES256ECB(card.CardNo)
+				_, pwd := client.DecryptAES256ECB(card.CardPwd)
+
+				fmt.Println("第%d张卡密CardNo：%s", i+1, no)
+				fmt.Println("第%d张卡密CardPwd：%s", i+1, pwd)
+			}
+		}
+	}
 }
