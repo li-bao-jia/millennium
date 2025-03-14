@@ -1,4 +1,4 @@
-package balance
+package product
 
 import (
 	"encoding/json"
@@ -7,20 +7,29 @@ import (
 )
 
 /**
- * 余额查询接口
+ * 商品同步接口
  */
 
 type Query struct{}
 
 type QueryResponse struct {
-	Code        string `json:"code"`        // 请求结果
-	Msg         string `json:"msg"`         // 结果描述
-	Balance     string `json:"balance"`     // 帐号余额，单位：元
-	CreditQuota string `json:"creditQuota"` // 授信额度，单位：元
+	Code string    `json:"code"` // 请求结果
+	Msg  string    `json:"msg"`  // 结果描述
+	Data []Product `json:"data"`
+}
+
+type Product struct {
+	ItemID   string `json:"itemId"`   // 商品编码
+	ItemName string `json:"itemName"` // 商品名称
+	ItemType string `json:"itemType"` // 商品类型: 0-直充, 1-卡券
+	ItemFace string `json:"itemFace"` // 商品面额: 月卡、周卡、100元等
+	ItemVal  string `json:"itemVal"`  // 商品面值: 标准价或官方原价
+	Status   string `json:"status"`   // 商品状态: 1-正常, 0-维护
+	Price    string `json:"price"`    // 商品价格: 单位元
 }
 
 func (q *Query) getMethod() string {
-	return "api/account/balance"
+	return "api/item/query"
 }
 
 func (q *Query) Handle(c *millennium.ApiClient) (error, QueryResponse) {
